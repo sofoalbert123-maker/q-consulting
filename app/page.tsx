@@ -38,6 +38,66 @@ function Nav() {
   );
 }
 
+function WorldMap() {
+  return (
+    <svg
+      viewBox="0 0 1200 600"
+      style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '110%',
+        maxWidth: '1400px',
+        opacity: 0.07,
+        pointerEvents: 'none',
+      }}
+    >
+      <defs>
+        <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      {/* Simplified world map dots */}
+      {[
+        // North America
+        ...Array.from({length: 25}, (_, i) => ({cx: 150 + (i % 5) * 30, cy: 120 + Math.floor(i / 5) * 25})),
+        // South America
+        ...Array.from({length: 15}, (_, i) => ({cx: 230 + (i % 3) * 25, cy: 320 + Math.floor(i / 3) * 30})),
+        // Europe
+        ...Array.from({length: 20}, (_, i) => ({cx: 500 + (i % 5) * 22, cy: 100 + Math.floor(i / 5) * 22})),
+        // Africa (highlighted)
+        ...Array.from({length: 25}, (_, i) => ({cx: 520 + (i % 5) * 25, cy: 230 + Math.floor(i / 5) * 28})),
+        // Asia
+        ...Array.from({length: 30}, (_, i) => ({cx: 700 + (i % 6) * 35, cy: 110 + Math.floor(i / 6) * 28})),
+        // Australia
+        ...Array.from({length: 8}, (_, i) => ({cx: 900 + (i % 4) * 28, cy: 380 + Math.floor(i / 4) * 25})),
+      ].map((dot, i) => (
+        <circle key={i} cx={dot.cx} cy={dot.cy} r="3" fill="#3b82f6" opacity={
+          // Make Africa dots brighter
+          dot.cx >= 520 && dot.cx <= 645 && dot.cy >= 230 && dot.cy <= 370 ? 1 : 0.4
+        } />
+      ))}
+      {/* South Africa glow */}
+      <circle cx="570" cy="380" r="80" fill="url(#glow)" />
+      <circle cx="570" cy="380" r="6" fill="#3b82f6" opacity="0.9" />
+      <circle cx="570" cy="380" r="12" fill="none" stroke="#3b82f6" strokeWidth="1" opacity="0.4">
+        <animate attributeName="r" from="12" to="30" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="opacity" from="0.4" to="0" dur="2s" repeatCount="indefinite" />
+      </circle>
+      {/* Connection lines from SA */}
+      {[
+        {x: 240, y: 160}, {x: 540, y: 130}, {x: 780, y: 150}, {x: 920, y: 390},
+      ].map((dest, i) => (
+        <line key={i} x1="570" y1="380" x2={dest.x} y2={dest.y} stroke="#3b82f6" strokeWidth="0.5" opacity="0.15" strokeDasharray="4 4">
+          <animate attributeName="strokeDashoffset" from="0" to="-8" dur="1.5s" repeatCount="indefinite" />
+        </line>
+      ))}
+    </svg>
+  );
+}
+
 function Hero() {
   return (
     <section style={{
@@ -50,7 +110,9 @@ function Hero() {
       padding: '8rem 1.5rem 6rem',
       position: 'relative',
       overflow: 'hidden',
+      background: 'radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(59,130,246,0.04) 0%, transparent 50%)',
     }}>
+      <WorldMap />
       <div style={{
         position: 'absolute',
         top: '20%',
@@ -58,7 +120,7 @@ function Hero() {
         transform: 'translateX(-50%)',
         width: '600px',
         height: '600px',
-        background: 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(59,130,246,0.06) 0%, transparent 70%)',
         pointerEvents: 'none',
       }} />
       <p style={{

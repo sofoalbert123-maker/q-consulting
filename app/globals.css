@@ -13,6 +13,11 @@ html {
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: #09090b;
+  background-image: 
+    radial-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+    radial-gradient(rgba(59,130,246,0.02) 1px, transparent 1px);
+  background-size: 40px 40px, 80px 80px;
+  background-position: 0 0, 20px 20px;
   color: #fafafa;
   -webkit-font-smoothing: antialiased;
 }
